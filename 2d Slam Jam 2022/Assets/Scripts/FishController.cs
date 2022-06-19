@@ -5,18 +5,24 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider2D))]
 public class FishController : MonoBehaviour
 {
-    [SerializeField] private float swimSpeed;
+    [SerializeField] protected float swimSpeed;
 
-    private BoxCollider2D collider => this.GetComponent<BoxCollider2D>();
-    private Rigidbody2D rb => this.GetComponent<Rigidbody2D>();
-    private Vector2 input => new Vector2(Input.GetAxis("Horizontal") * swimSpeed, Input.GetAxis("Vertical") * swimSpeed);
+    private BoxCollider2D fishCollider => this.GetComponent<BoxCollider2D>();
+    protected Rigidbody2D rb => this.GetComponent<Rigidbody2D>();
+    protected Vector2 input => new Vector2(Input.GetAxis("Horizontal") * swimSpeed, Input.GetAxis("Vertical") * swimSpeed);
 
     private bool facingLeft = true;
+    
 
     private void FixedUpdate()
     {
-        rb.velocity = input;
+        Move();
         FlipSprite(rb.velocity.x);
+    }
+
+    protected virtual void Move()
+    {
+        rb.velocity = input;
     }
 
     // flips sprite to face move dir
